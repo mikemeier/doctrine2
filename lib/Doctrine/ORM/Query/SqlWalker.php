@@ -246,7 +246,8 @@ class SqlWalker implements TreeWalker
      * Generates a unique, short SQL table alias.
      *
      * @param string $tableName Table name
-     * @param string $dqlAlias The DQL alias.
+     * @param string $dqlAlias  The DQL alias.
+     *
      * @return string Generated table alias.
      */
     public function getSQLTableAlias($tableName, $dqlAlias = '')
@@ -254,7 +255,8 @@ class SqlWalker implements TreeWalker
         $tableName .= ($dqlAlias) ? '@[' . $dqlAlias . ']' : '';
 
         if ( ! isset($this->tableAliasMap[$tableName])) {
-            $this->tableAliasMap[$tableName] = strtolower(substr($tableName, 0, 1)) . $this->tableAliasCounter++ . '_';
+            $tablePrefixAlias = preg_match('~[a-z]~i', $tableName[0]) ? strtolower($tableName[0]) : 't';
+            $this->tableAliasMap[$tableName] = $tablePrefixAlias . $this->tableAliasCounter++ . '_';
         }
 
         return $this->tableAliasMap[$tableName];
